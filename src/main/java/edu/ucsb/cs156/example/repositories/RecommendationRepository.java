@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RecommendationRepository extends CrudRepository<Recommendation, Long> {
+    Iterable<Recommendation> findAll();
 }

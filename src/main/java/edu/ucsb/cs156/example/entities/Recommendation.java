@@ -26,5 +26,6 @@ public class Recommendation {
   private String professorEmail;  
   private LocalDateTime dateRequested;
   private LocalDateTime dateNeeded;
-  boolean done;
+  private String explanation;
+  private boolean done;
 }
