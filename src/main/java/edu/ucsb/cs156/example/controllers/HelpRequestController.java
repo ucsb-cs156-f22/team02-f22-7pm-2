@@ -31,14 +31,22 @@ public class HelpRequestController extends ApiController {
     @Autowired
     HelpRequestRepository helpRequestRepository;
 
-    @ApiOperation(value = "Get a single help request")
+    @ApiOperation(value = "List all help requests")
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("")
-    public HelpRequest getById(@ApiParam("id") @RequestParam Long id) {
-        HelpRequest helpRequest = helpRequestRepository.findById(id).
-            orElseThrow(() -> new EntityNotFoundException(HelpRequest.class, id));
+    @GetMapping("/all")
+    public Iterable<HelpRequest> allHelpRequests() {
+        Iterable<HelpRequest> helpRequest = helpRequestRepository.findAll();
         return helpRequest;
     }
+
+    // @ApiOperation(value = "Get a single help request")
+    // @PreAuthorize("hasRole('ROLE_USER')")
+    // @GetMapping("")
+    // public HelpRequest getById(@ApiParam("id") @RequestParam Long id) {
+    //     HelpRequest helpRequest = helpRequestRepository.findById(id).
+    //         orElseThrow(() -> new EntityNotFoundException(HelpRequest.class, id));
+    //     return helpRequest;
+    // }
 
     @ApiOperation(value = "Create a new help request")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -47,6 +55,7 @@ public class HelpRequestController extends ApiController {
             @ApiParam("requesterEmail") @RequestParam String requesterEmail,
             @ApiParam("teamId") @RequestParam String teamId,
             @ApiParam("tableOrBreakoutRoom") @RequestParam String tableOrBreakoutRoom,
+            @ApiParam("explanation") @RequestParam String explanation,
             @ApiParam("date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)") @RequestParam("requestTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime requestTime)
             throws JsonProcessingException {
 
@@ -60,7 +69,7 @@ public class HelpRequestController extends ApiController {
         helpRequest.setTeamId(teamId);
         helpRequest.setTableOrBreakoutRoom(tableOrBreakoutRoom);
         helpRequest.setRequestTime(requestTime);
-        helpRequest.setExplanation("");
+        helpRequest.setExplanation(explanation);
         helpRequest.setSolved(false);
 
         HelpRequest savedHelpRequest = helpRequestRepository.save(helpRequest);
