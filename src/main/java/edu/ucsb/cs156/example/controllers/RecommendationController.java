@@ -79,17 +79,17 @@ public class RecommendationController extends ApiController {
         return savedRecommendation;
     }
 
-    /*@ApiOperation(value = "Delete a Recommendation")
+    @ApiOperation(value = "Delete a Recommendation")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("")
     public Object deleteRecommendation(
             @ApiParam("id") @RequestParam Long id) {
-        Recommendation ucsbDate = recommendationRepository.findById(id)
+        Recommendation recommendation = recommendationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Recommendation.class, id));
 
-        recommendationRepository.delete(ucsbDate);
-        return genericMessage("UCSBDate with id %s deleted".formatted(id));
-    }*/
+        recommendationRepository.delete(recommendation);
+        return genericMessage("Recommendation with id %s deleted".formatted(id));
+    }
 
     @ApiOperation(value = "Update a single Recommendation")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
