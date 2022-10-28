@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
 @RequestMapping("/api/menuitemreview")
 @RestController
 @Slf4j
-public class MenuItemReviewController extends ApiController {
+/*public class MenuItemReviewController extends ApiController {
     @Autowired
     MenuItemReviewRepository menuItemReviewRepository;
 
@@ -110,4 +110,4 @@ public class MenuItemReviewController extends ApiController {
         return reviews;
     }
 
-}
+}*/
