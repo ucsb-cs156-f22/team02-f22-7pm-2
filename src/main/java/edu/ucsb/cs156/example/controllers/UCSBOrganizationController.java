@@ -1,16 +1,19 @@
 package edu.ucsb.cs156.example.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.cs156.example.entities.UCSBOrganization;
 import edu.ucsb.cs156.example.errors.EntityNotFoundException;
-import edu.ucsb.cs156.example.repositories.UCSBDiningCommonsRepository;
 import edu.ucsb.cs156.example.repositories.UCSBOrganizationRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,7 +47,7 @@ public class UCSBOrganizationController extends ApiController{
 
         return organization;
     }
-    
+
     @ApiOperation(value = "Create a new organization")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
@@ -67,4 +70,26 @@ public class UCSBOrganizationController extends ApiController{
 
         return savedOrganization;
     }
+
+    @ApiOperation(value = "Update a single commons")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public UCSBOrganization updateCommons(
+            @ApiParam("code") @RequestParam String orgCode,
+            @RequestBody @Valid UCSBOrganization incoming) {
+
+        UCSBOrganization org = ucsbOrganizationRepository.findById(orgCode)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBOrganization.class, orgCode));
+        
+        org.setOrgCode(incoming.getOrgCode());
+        org.setOrgTranslationShort(incoming.getOrgTranslationShort());
+        org.setOrgTranslation(incoming.getOrgTranslation());
+        org.setInactive(incoming.getInactive());
+
+
+        ucsbOrganizationRepository.save(org);
+
+        return org;
+    }
+    
 }
