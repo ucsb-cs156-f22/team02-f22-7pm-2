@@ -102,12 +102,12 @@ public class HelpRequestController extends ApiController {
 
         HelpRequest helpRequest = helpRequestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(HelpRequest.class, id));
-
-        helpRequest.setRequesterEmail(incoming.getRequesterEmail());
-        helpRequest.setTeamId(incoming.getTeamId());
-        helpRequest.setTableOrBreakoutRoom((incoming.getTableOrBreakoutRoom()));
-        helpRequest.setRequestTime(incoming.getRequestTime());
-        helpRequest.setExplanation(incoming.getExplanation());
+        
+        helpRequest.setRequesterEmail(incoming.getRequesterEmail() == null ? helpRequest.getRequesterEmail() : incoming.getRequesterEmail());
+        helpRequest.setTeamId(incoming.getTeamId() == null ? helpRequest.getTeamId() : incoming.getTeamId());
+        helpRequest.setTableOrBreakoutRoom(incoming.getTableOrBreakoutRoom() == null ? helpRequest.getTableOrBreakoutRoom() : incoming.getTableOrBreakoutRoom());
+        helpRequest.setRequestTime(incoming.getRequestTime() == null ? helpRequest.getRequestTime() : incoming.getRequestTime());
+        helpRequest.setExplanation(incoming.getExplanation() == null ? helpRequest.getExplanation() : incoming.getExplanation());
         helpRequest.setSolved(incoming.getSolved());
 
         helpRequestRepository.save(helpRequest);

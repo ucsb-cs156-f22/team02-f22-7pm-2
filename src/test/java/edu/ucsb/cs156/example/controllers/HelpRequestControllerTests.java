@@ -259,6 +259,7 @@ public class HelpRequestControllerTests extends ControllerTestCase {
             LocalDateTime ldt2 = LocalDateTime.parse("2023-01-03T00:00:00");
 
             HelpRequest helpRequestOrig = HelpRequest.builder()
+                            .id(1)
                             .requesterEmail("cgaucho@ucsb.edu")
                             .teamId("7pm-2")
                             .tableOrBreakoutRoom("table")
@@ -268,12 +269,13 @@ public class HelpRequestControllerTests extends ControllerTestCase {
                             .build();
 
             HelpRequest helpRequestEdited = HelpRequest.builder()
+                            .id(1)
                             .requesterEmail("dgaucho@ucsb.edu")
                             .teamId("7pm-2")
                             .tableOrBreakoutRoom("table")
                             .requestTime(ldt2)
                             .explanation("need help")
-                            .solved(false)
+                            .solved(true)
                             .build();
 
 
