@@ -43,6 +43,17 @@ public class RecommendationController extends ApiController {
         return recommendations;
     }
 
+    @ApiOperation(value = "Get a single Recommendation")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public Recommendation getById(
+            @ApiParam("id") @RequestParam Long id) {
+        Recommendation recommendation = recommendationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Recommendation.class, id));
+
+        return recommendation;
+    }
+
     @ApiOperation(value = "Create a new recommendation")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
@@ -52,13 +63,13 @@ public class RecommendationController extends ApiController {
             @ApiParam("explanation") @RequestParam String explanation,
             @ApiParam("dateRequested") @RequestParam LocalDateTime dateRequested,
             @ApiParam("dateNeeded") @RequestParam LocalDateTime dateNeeded,
-            @ApiParam("done") @RequestParam boolean done
+            @ApiParam("done") @RequestParam Boolean done
             )
-            {
+            throws JsonProcessingException {
         Recommendation recommendation = new Recommendation();
         recommendation.setRequesterEmail(requesterEmail);
         recommendation.setProfessorEmail(professorEmail);
-        recommendation.setExplanation(requesterEmail);
+        recommendation.setExplanation(explanation);
         recommendation.setDateRequested(dateRequested);
         recommendation.setDateNeeded(dateNeeded);
         recommendation.setDone(done);
@@ -66,5 +77,39 @@ public class RecommendationController extends ApiController {
         Recommendation savedRecommendation = recommendationRepository.save(recommendation);
 
         return savedRecommendation;
+    }
+
+    /*@ApiOperation(value = "Delete a Recommendation")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteRecommendation(
+            @ApiParam("id") @RequestParam Long id) {
+        Recommendation ucsbDate = recommendationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Recommendation.class, id));
+
+        recommendationRepository.delete(ucsbDate);
+        return genericMessage("UCSBDate with id %s deleted".formatted(id));
+    }*/
+
+    @ApiOperation(value = "Update a single Recommendation")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public Recommendation updateRecommendation(
+            @ApiParam("id") @RequestParam Long id,
+            @RequestBody @Valid Recommendation incoming) {
+
+        Recommendation recommendation = recommendationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Recommendation.class, id));
+
+        recommendation.setRequesterEmail(incoming.getRequesterEmail());
+        recommendation.setProfessorEmail(incoming.getProfessorEmail());
+        recommendation.setExplanation(incoming.getExplanation());
+        recommendation.setDateRequested(incoming.getDateRequested());
+        recommendation.setDateNeeded(incoming.getDateNeeded());
+        recommendation.setDone(incoming.getDone());
+
+        recommendationRepository.save(recommendation);
+
+        return recommendation;
     }
 }
