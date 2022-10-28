@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.cs156.example.entities.UCSBOrganization;
+import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.UCSBDiningCommonsRepository;
 import edu.ucsb.cs156.example.repositories.UCSBOrganizationRepository;
 import io.swagger.annotations.Api;
@@ -43,6 +44,7 @@ public class UCSBOrganizationController extends ApiController{
         @ApiParam("inactive") @RequestParam boolean inactive
         
     )
+    
     {
         UCSBOrganization organization = new UCSBOrganization();
         organization.setOrgCode(orgCode);
