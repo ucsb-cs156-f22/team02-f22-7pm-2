@@ -278,19 +278,18 @@ public class HelpRequestControllerTests extends ControllerTestCase {
                             .solved(true)
                             .build();
 
-
             String requestBody = mapper.writeValueAsString(helpRequestEdited);
 
             when(helpRequestRepository.findById(eq(1L))).thenReturn(Optional.of(helpRequestOrig));
 
             // act
             MvcResult response = mockMvc.perform(
-                            put("/api/helprequest?id=1")
-                                            .contentType(MediaType.APPLICATION_JSON)
-                                            .characterEncoding("utf-8")
-                                            .content(requestBody)
-                                            .with(csrf()))
-                            .andExpect(status().isOk()).andReturn();
+                put("/api/helprequest?id=1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .characterEncoding("utf-8")
+                                .content(requestBody)
+                                .with(csrf()))
+                .andExpect(status().isOk()).andReturn();
 
             // assert
             verify(helpRequestRepository, times(1)).findById(1L);
