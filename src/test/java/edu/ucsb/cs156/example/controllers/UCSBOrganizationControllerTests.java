@@ -175,14 +175,14 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
                                 .orgCode("VSA")
                                 .orgTranslationShort("VIETNAMESE STUDENT")
                                 .orgTranslation("VIETNAMESE STUDENT ASSOCIATION")
-                                .inactive(false)
+                                .inactive(true)
                                 .build();
 
                 when(ucsbOrganizationRepository.save(eq(vsa))).thenReturn(vsa);
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                post("/api/UCSBOrganization/post?orgCode=VSA&orgTranslationShort=VIETNAMESE STUDENT&orgTranslation=VIETNAMESE STUDENT ASSOCIATION&inactive=false")
+                                post("/api/UCSBOrganization/post?orgCode=VSA&orgTranslationShort=VIETNAMESE STUDENT&orgTranslation=VIETNAMESE STUDENT ASSOCIATION&inactive=true")
                                                 .with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 
@@ -202,12 +202,12 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
                                 .orgCode("VSA")
                                 .orgTranslationShort("VIETNAMESE STUDENT")
                                 .orgTranslation("VIETNAMESE STUDENT ASSOCIATION")
-                                .inactive(false)
+                                .inactive(true)
                                 .build();
 
                 UCSBOrganization vsaEdited = UCSBOrganization.builder()
-                                .orgCode("VSA")
-                                .orgTranslationShort("VIETNAMESE STUDENT")
+                                .orgCode("vSA")
+                                .orgTranslationShort("VIETNAMESE STUDENTS")
                                 .orgTranslation("UCSB VIETNAMESE STUDENT ASSOCIATION")
                                 .inactive(false)
                                 .build();
