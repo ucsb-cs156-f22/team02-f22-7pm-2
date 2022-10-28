@@ -260,31 +260,40 @@ public class RecommendationControllerTests extends ControllerTestCase {
                 verify(recommendationRepository, times(1)).findById(15L);
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("Recommendation with id 15 not found", json.get("message"));
-        }
+        }*/
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
         public void admin_can_edit_an_existing_ucsbdate() throws Exception {
                 // arrange
 
-                LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
-                LocalDateTime ldt2 = LocalDateTime.parse("2023-01-03T00:00:00");
-
-                UCSBDate ucsbDateOrig = UCSBDate.builder()
-                                .name("firstDayOfClasses")
-                                .quarterYYYYQ("20222")
-                                .localDateTime(ldt1)
+                LocalDateTime dr1 = LocalDateTime.parse("2022-04-01T00:00:00");
+                LocalDateTime dn1 = LocalDateTime.parse("2022-11-15T00:00:00");
+                                                
+                Recommendation r1 = Recommendation.builder()
+                                .requesterEmail("cgaucho@ucsb.edu")
+                                .professorEmail("phtcon@ucsb.edu")
+                                .explanation("BS/MS program")
+                                .dateRequested(dr1)
+                                .dateNeeded(dn1)
+                                .done(true)
                                 .build();
 
-                UCSBDate ucsbDateEdited = UCSBDate.builder()
-                                .name("firstDayOfFestivus")
-                                .quarterYYYYQ("20232")
-                                .localDateTime(ldt2)
+                LocalDateTime dr2 = LocalDateTime.parse("2022-04-20T00:00:00");
+                LocalDateTime dn2 = LocalDateTime.parse("2022-11-10T00:00:00");
+                                                
+                Recommendation r2 = Recommendation.builder()
+                                .requesterEmail("Idelplaya@ucsb.edu")
+                                .professorEmail("richert@ucsb.edu")
+                                .explanation("PhD CS Stanford")
+                                .dateRequested(dr2)
+                                .dateNeeded(dn2)
+                                .done(false)
                                 .build();
 
-                String requestBody = mapper.writeValueAsString(ucsbDateEdited);
+                String requestBody = mapper.writeValueAsString(r1);
 
-                when(ucsbDateRepository.findById(eq(67L))).thenReturn(Optional.of(ucsbDateOrig));
+                when(recommendationRepository.findById(eq(67L))).thenReturn(Optional.of(r2));
 
                 // act
                 MvcResult response = mockMvc.perform(
@@ -296,8 +305,8 @@ public class RecommendationControllerTests extends ControllerTestCase {
                                 .andExpect(status().isOk()).andReturn();
 
                 // assert
-                verify(ucsbDateRepository, times(1)).findById(67L);
-                verify(ucsbDateRepository, times(1)).save(ucsbDateEdited); // should be saved with correct user
+                verify(recommendationRepository, times(1)).findById(67L);
+                verify(recommendationRepository, times(1)).save(r1); // should be saved with correct user
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(requestBody, responseString);
         }
@@ -307,17 +316,21 @@ public class RecommendationControllerTests extends ControllerTestCase {
         public void admin_cannot_edit_ucsbdate_that_does_not_exist() throws Exception {
                 // arrange
 
-                LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+                LocalDateTime dr = LocalDateTime.parse("2022-05-20T00:00:00");
+                LocalDateTime dn = LocalDateTime.parse("2022-11-15T00:00:00");
 
-                UCSBDate ucsbEditedDate = UCSBDate.builder()
-                                .name("firstDayOfClasses")
-                                .quarterYYYYQ("20222")
-                                .localDateTime(ldt1)
-                                .build();
+                Recommendation recommendation1 = Recommendation.builder()
+                                        .requesterEmail("Idelplaya@ucsb.edu")
+                                        .professorEmail("phtcon@ucsb.edu")
+                                        .explanation("PhD CS Stanford")
+                                        .dateRequested(dr)
+                                        .dateNeeded(dn)
+                                        .done(true)
+                                        .build();
 
-                String requestBody = mapper.writeValueAsString(ucsbEditedDate);
+                String requestBody = mapper.writeValueAsString(recommendation1);
 
-                when(ucsbDateRepository.findById(eq(67L))).thenReturn(Optional.empty());
+                when(recommendationRepository.findById(eq(67L))).thenReturn(Optional.empty());
 
                 // act
                 MvcResult response = mockMvc.perform(
@@ -329,10 +342,9 @@ public class RecommendationControllerTests extends ControllerTestCase {
                                 .andExpect(status().isNotFound()).andReturn();
 
                 // assert
-                verify(ucsbDateRepository, times(1)).findById(67L);
+                verify(recommendationRepository, times(1)).findById(67L);
                 Map<String, Object> json = responseToJson(response);
-                assertEquals("UCSBDate with id 67 not found", json.get("message"));
+                assertEquals("Recommendation with id 67 not found", json.get("message"));
 
         }
-        */
 }

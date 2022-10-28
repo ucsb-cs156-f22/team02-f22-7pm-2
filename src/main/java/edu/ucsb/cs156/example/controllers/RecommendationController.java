@@ -89,12 +89,12 @@ public class RecommendationController extends ApiController {
 
         recommendationRepository.delete(ucsbDate);
         return genericMessage("UCSBDate with id %s deleted".formatted(id));
-    }
+    }*/
 
     @ApiOperation(value = "Update a single Recommendation")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("")
-    public Recommendation updateUCSBDate(
+    public Recommendation updateRecommendation(
             @ApiParam("id") @RequestParam Long id,
             @RequestBody @Valid Recommendation incoming) {
 
@@ -111,5 +111,5 @@ public class RecommendationController extends ApiController {
         recommendationRepository.save(recommendation);
 
         return recommendation;
-    }*/
+    }
 }
