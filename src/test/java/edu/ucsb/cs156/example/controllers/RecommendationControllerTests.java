@@ -208,7 +208,7 @@ public class RecommendationControllerTests extends ControllerTestCase {
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(expectedJson, responseString);
         }
-        /*
+        
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
         public void admin_can_delete_a_recommendation() throws Exception {
@@ -226,7 +226,7 @@ public class RecommendationControllerTests extends ControllerTestCase {
                                         .done(true)
                                         .build();
 
-                when(recommendaitonRepository.findById(eq(15L))).thenReturn(Optional.of(recommendation1));
+                when(recommendationRepository.findById(eq(15L))).thenReturn(Optional.of(recommendation1));
 
                 // act
                 MvcResult response = mockMvc.perform(
@@ -260,7 +260,7 @@ public class RecommendationControllerTests extends ControllerTestCase {
                 verify(recommendationRepository, times(1)).findById(15L);
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("Recommendation with id 15 not found", json.get("message"));
-        }*/
+        }
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
