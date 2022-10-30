@@ -7,5 +7,4 @@ import edu.ucsb.cs156.example.entities.HelpRequest;
 
 @Repository
 public interface HelpRequestRepository extends CrudRepository<HelpRequest, Long> {
-    Iterable<HelpRequest> findAllByRequesterEmail(String requesterEmail);
 }

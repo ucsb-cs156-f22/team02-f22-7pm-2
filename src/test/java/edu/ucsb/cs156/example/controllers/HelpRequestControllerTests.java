@@ -290,10 +290,11 @@ public class HelpRequestControllerTests extends ControllerTestCase {
                                 .content(requestBody)
                                 .with(csrf()))
                 .andExpect(status().isOk()).andReturn();
+            assertEquals(requestBody, response.getResponse().getContentAsString());
 
             // assert
             verify(helpRequestRepository, times(1)).findById(1L);
-            verify(helpRequestRepository, times(1)).save(helpRequestEdited); // should be saved with correct user
+            verify(helpRequestRepository, times(1)).save(helpRequestEdited);
             String responseString = response.getResponse().getContentAsString();
             assertEquals(requestBody, responseString);
     }
