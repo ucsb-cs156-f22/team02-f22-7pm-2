@@ -271,10 +271,10 @@ public class HelpRequestControllerTests extends ControllerTestCase {
             HelpRequest helpRequestEdited = HelpRequest.builder()
                             .id(1)
                             .requesterEmail("dgaucho@ucsb.edu")
-                            .teamId("7pm-2")
-                            .tableOrBreakoutRoom("table")
+                            .teamId("8pm-2")
+                            .tableOrBreakoutRoom("breakout")
                             .requestTime(ldt2)
-                            .explanation("need help")
+                            .explanation("ned help")
                             .solved(true)
                             .build();
 
